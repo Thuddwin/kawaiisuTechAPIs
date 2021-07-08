@@ -1,5 +1,5 @@
-#KawaiisuTech APIs
+# KawaiisuTech APIs
 
-##strictlyLIVE API
+## strictlyLIVE API
 
-##Prayer Request Services API
+## Prayer Request Services API
