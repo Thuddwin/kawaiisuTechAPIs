@@ -1,0 +1,63 @@
+{"schedule": [
+{
+"day": "Tuesday",
+"title": "No Service Tuesday",
+"start": "19:25",
+"startLabel": " 7:25 PM",
+"end": "20:10",
+"url": "https://www.youtube.com/user/ApostolicFaithHQ/live",
+"source": "server",
+"enabled": "off"
+},
+{
+"day": "Friday",
+"title": "No Service Friday",
+"start": "19:25",
+"startLabel": "7:25 PM",
+"end": "20:45",
+"url": "https://www.youtube.com/user/ApostolicFaithHQ/live",
+"source": "server",
+"enabled": "off"
+},
+{
+"day": "Sunday",
+"title": "Sunday Morning Service",
+"start": "10:50",
+"startLabel": "10:50 AM",
+"end": "12:30",
+"url": "https://www.youtube.com/user/ApostolicFaithHQ/live",
+"source": "server",
+"enabled": "on"
+},
+{
+"day": "Sunday",
+"title": "Sunday Evening Service",
+"start": "17:50",
+"startLabel": "5:55 PM",
+"end": "19:15",
+"url": "https://www.youtube.com/user/ApostolicFaithHQ/live",
+"source": "server",
+"enabled": "on"
+},
+{
+"day": "Friday",
+"title": "Test 1",
+"start": "23:40",
+"startLabel": "9:12 AM",
+"end": "23:45",
+"url": "https://youtu.be/UmclL6funN8?list=PLU12uITxBEPHOJO1FU8qll6gQmKcXp5S7",
+"source": "server",
+"enabled": "on"
+},
+{
+"day": "Wednesday",
+"title": "Eagles",
+"start": "09:23",
+"startLabel": "5:21 PM",
+"end": "09:24",
+"url": "https://youtu.be/UmclL6funN8?list=PLU12uITxBEPHOJO1FU8qll6gQmKcXp5S7",
+"source": "server",
+"enabled": "on"
+}
+]
+}
