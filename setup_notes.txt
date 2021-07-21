@@ -1,0 +1,2 @@
+Auto-start kTechServer.
+rc.local contains: su pi -c "/home/pi/ktech/kTechServer.js &"
