@@ -40,11 +40,11 @@
 "enabled": "on"
 },
 {
-"day": "Thursday",
+"day": "Saturday",
 "title": "Decarah North Eagles",
-"start": "10:43",
-"startLabel": "10:43 AM",
-"end": "10:47",
+"start": "14:05",
+"startLabel": "2:05 PM",
+"end": "14:10",
 "url": "https://youtu.be/eTAsANPVqB8",
 "source": "server",
 "enabled": "on"

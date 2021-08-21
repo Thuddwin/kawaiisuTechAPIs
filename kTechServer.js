@@ -1,75 +1,64 @@
-// kTechServer API - Only serves up Schedule that is downloaded with fs. 
+const fa = require('./public/js/fileAccess');
+const fs = require('fs');
+const notifier = require('./public/js/Notifier');
 const express = require('express');
 const app = express();
-// const http = require('http').Server(app);
-const fs = require("fs");
-
 const https_options = {
     key: fs.readFileSync(`/etc/letsencrypt/live/www.kawaiisutech.com/privkey.pem`),
     cert: fs.readFileSync('/etc/letsencrypt/live/www.kawaiisutech.com/fullchain.pem')
 }
-// var server = https.createServer(options, app);
+
+// API ACCESS /////////////////////////////////////////
 const https = require('https');
 let server = https.createServer(https_options, app)
 server.listen(443);
-
-const io = require('socket.io')(https);
-const path = require('path');
-const ktechHeader = 'ktech_sends_message';
-const myDeviceName = 'kTechAPIServer';
-
-// SOCKET CONNECTIONS //
-io.on('connection', socket => {
-    console.log(`${myDeviceName}:io.on:connection: Device connected.`)
-    socket.emit(ktechHeader, {'message':'connected_to_ktech'});
-
-    // INCOMING MESSAGES //
-    // socket.on('')
-});
-
-io.on('server_as_client_sends_message', data => {
-    console.log(`${myDeviceName}:io.on:server_as_client_sends_message`);
-    console.dir(data);
-})
-
 // EXPRESS SETUP //
 app.use(express.static('public'));
-
-// API SETUP //
+// WEB PAGE SETUP (Don't put in the API?) //
 app.get('/', (req, res) => {
         res.status(200).send('Future site of KawaiisuTech.com.');
 });
-
+// API PULL DATA REQUEST (Requires effort from the Client.) //
 app.get('/schedule', (req, res) => {
     // First, read schedule from disk.
-    gs().then((sched) => {
-        console.log(`${myDeviceName}:getScheduleFromFile.then...:`);
+    fa.gs().then((sched) => {
+        console.log(`${myDeviceName}:app.get/schedule:fa.gs():sched pull...`);
         if(sched) { console.log(`${myDeviceName}: was successful.`); }
         else { console.log(`${myDeviceName}: failed.`); }
-        // console.dir(sched);
-
         res.status(200).send(sched);
     });
 });
+///////////////////////////////////////////////////////
 
-async function gs() {
-    return await getScheduleFromFile().then(d => {
-        return d;
+// NON-SECURE SOCKET ACCESS ///////////////////////////
+const http = require('http');
+const io = require('socket.io')(http);
+io.listen(56010);
+///////////////////////////////////////////////////////
+const myDeviceName = 'kTechAPIServer';
+// SOCKET CONNECTIONS //
+io.on('connection', socket => {
+    console.log(`${myDeviceName}:io.on:connection: Device connected.`)
+    socket.emit('ktech_sends_message', {'message':'connected_to_ktech','data': 'Connected to kTechServer @ http://www.kawaiisutech.com.'});
+    
+    // INCOMING MESSAGES //
+    socket.on('client_sends_message_to_ktech', data => {
+        if(data.message === 'request_api_schedule') {
+            let apiSched = fa.getSchedJSON().then((sched) => {
+                console.log(`${myDeviceName}:sending schedule...`);
+                console.dir(sched);
+                socket.emit('ktech_sends_message', {'message':'requested_api_schedule', 'data': sched});
+                return sched;
+            });
+        }
     });
-}
+});
 
-async function getScheduleFromFile() {
-    return await fs.readFileSync(
-        __dirname + "/schedule.json",
-        'utf8',
-        (err, data) => {
-        return data;
-    });
-}
-
-// let server = app.listen(443, function () {
-//    let host = server.address().address
-//    let port = server.address().port
-//    console.log("kTech Server listening at http://%s:%s", host, port)
-// });
-
+notifier.on('file_access_sends_message', data => {
+    console.log(`${myDeviceName}:notifier.on:file_access_sends_message`);
+    if(data.message === 'new_schedule') {
+        console.log('NEW SCHEDULE IN:');
+        console.dir(data.data);
+        io.emit('ktech_sends_message', {'message':'new_schedule', 'data':data.data});
+    }
+});
