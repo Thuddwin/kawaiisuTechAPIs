@@ -48,6 +48,26 @@
 "url": "https://youtu.be/eTAsANPVqB8",
 "source": "server",
 "enabled": "on"
+},
+{
+"day": "Sunday",
+"title": "Van Buren Service (AM)",
+"start": "09:00",
+"startLabel": "9:00 AM",
+"end": "10:15",
+"url": "https://www.youtube.com/c/ApostolicFaithVanBuren/live",
+"source": "server",
+"enabled": "on"
+},
+{
+"day": "Sunday",
+"title": "Van Buren Service (PM)",
+"start": "15:00",
+"startLabel": "3:00 PM",
+"end": "16:15",
+"url": "https://www.youtube.com/c/ApostolicFaithVanBuren/live",
+"source": "server",
+"enabled": "on"
 }
 ]
 }
