@@ -46,22 +46,10 @@ io.on('connection', socket => {
     socket.on('client_sends_message_to_ktech', data => {
         let {message} = data;
         if(message === 'request_api_schedule') {
-            let apiSched = fa.getSchedJSON().then((sched) => {
-                console.log(`${myDeviceName}:sending schedule...`);
-                console.dir(sched);
-                socket.emit('ktech_sends_message', {'message':'requested_api_schedule', 'data': sched});
-                return sched;
-            });
+            getScheduleAsync();
         } else if (message === 'my_id') {
             let {id} = data;
-            console.log(`${myDeviceName}:socket:on:my_id:id: '${id}' is connected.`);
-            console.log(`${myDeviceName}:Sending API schedule...`);
-            let apiSched = fa.getSchedJSON().then((sched) => {
-                console.log(`${myDeviceName}:sending schedule...`);
-                console.dir(sched);
-                socket.emit('ktech_sends_message', {'message':'requested_api_schedule', 'data': sched});
-                return sched;
-            });
+            getScheduleAsync();
         }
     });
 });
@@ -69,8 +57,13 @@ io.on('connection', socket => {
 notifier.on('file_access_sends_message', data => {
     console.log(`${myDeviceName}:notifier.on:file_access_sends_message`);
     if(data.message === 'new_schedule') {
-        console.log('NEW SCHEDULE IN:');
-        console.dir(data.data);
         io.emit('ktech_sends_message', {'message':'new_schedule', 'data':data.data});
     }
 });
+
+async function getScheduleAsync() {
+    return await fa.getSchedJSON().then((sched) => {
+        io.emit('ktech_sends_message', {'message':'requested_api_schedule', 'data': sched});
+        return sched;
+    });
+}
