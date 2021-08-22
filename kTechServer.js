@@ -7,6 +7,7 @@ const https_options = {
     key: fs.readFileSync(`/etc/letsencrypt/live/www.kawaiisutech.com/privkey.pem`),
     cert: fs.readFileSync('/etc/letsencrypt/live/www.kawaiisutech.com/fullchain.pem')
 }
+const myDeviceName = 'kTechServer';
 
 // API ACCESS /////////////////////////////////////////
 const https = require('https');
@@ -35,7 +36,7 @@ const http = require('http');
 const io = require('socket.io')(http);
 io.listen(56010);
 ///////////////////////////////////////////////////////
-const myDeviceName = 'kTechAPIServer';
+
 // SOCKET CONNECTIONS //
 io.on('connection', socket => {
     console.log(`${myDeviceName}:io.on:connection: Device connected.`)
@@ -43,7 +44,18 @@ io.on('connection', socket => {
     
     // INCOMING MESSAGES //
     socket.on('client_sends_message_to_ktech', data => {
-        if(data.message === 'request_api_schedule') {
+        let {message} = data;
+        if(message === 'request_api_schedule') {
+            let apiSched = fa.getSchedJSON().then((sched) => {
+                console.log(`${myDeviceName}:sending schedule...`);
+                console.dir(sched);
+                socket.emit('ktech_sends_message', {'message':'requested_api_schedule', 'data': sched});
+                return sched;
+            });
+        } else if (message === 'my_id') {
+            let {id} = data;
+            console.log(`${myDeviceName}:socket:on:my_id:id: '${id}' is connected.`);
+            console.log(`${myDeviceName}:Sending API schedule...`);
             let apiSched = fa.getSchedJSON().then((sched) => {
                 console.log(`${myDeviceName}:sending schedule...`);
                 console.dir(sched);
