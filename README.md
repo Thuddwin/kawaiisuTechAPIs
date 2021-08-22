@@ -5,4 +5,4 @@ An API the strictlyLIVE modules periodically query for the latest Schedule.
 strictlyLIVE (sL) modules in the wild come here to get Schedule information.  For now, all sL clients will receive the same data. Schedule is a JSON document, for now.  No database.
 
 ## Prayer Request Services (PRS) API
-The API services the Twilio phone-in line. Database used. 
+This API services the Twilio phone-in line. Database used. 
