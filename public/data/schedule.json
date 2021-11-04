@@ -22,8 +22,8 @@
 {
 "day": "Sunday",
 "title": "Portland Service (AM)",
-"start": "10:50",
-"startLabel": "10:50 AM",
+"start": "10:55",
+"startLabel": "10:55 AM",
 "end": "12:30",
 "url": "https://www.youtube.com/user/ApostolicFaithHQ/live",
 "source": "server",
@@ -32,9 +32,9 @@
 {
 "day": "Sunday",
 "title": "Portland Service (PM)",
-"start": "17:50",
+"start": "17:55",
 "startLabel": "5:55 PM",
-"end": "19:15",
+"end": "19:30",
 "url": "https://www.youtube.com/user/ApostolicFaithHQ/live",
 "source": "server",
 "enabled": "on"
@@ -42,30 +42,10 @@
 {
 "day": "Saturday",
 "title": "Decarah North Eagles",
-"start": "14:05",
+"start": "13:05",
 "startLabel": "2:05 PM",
-"end": "14:10",
+"end": "13:25",
 "url": "https://youtu.be/eTAsANPVqB8",
-"source": "server",
-"enabled": "on"
-},
-{
-"day": "Sunday",
-"title": "Van Buren Service (AM)",
-"start": "09:00",
-"startLabel": "9:00 AM",
-"end": "10:15",
-"url": "https://www.youtube.com/c/ApostolicFaithVanBuren/live",
-"source": "server",
-"enabled": "on"
-},
-{
-"day": "Sunday",
-"title": "Van Buren Service (PM)",
-"start": "15:00",
-"startLabel": "3:00 PM",
-"end": "16:15",
-"url": "https://www.youtube.com/c/ApostolicFaithVanBuren/live",
 "source": "server",
 "enabled": "on"
 }

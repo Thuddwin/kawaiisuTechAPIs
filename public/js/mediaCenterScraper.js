@@ -53,20 +53,26 @@ async function grabVideoData() {
             console.log(error);
             }
             else {
-                let jsonBod = JSON.parse(body);
-                // GRAB THE 'DATA' ARRAY WHICH CONTAINS ALL THE VIMEO LINKS //
-                let dataArray = jsonBod.data;
-                for(let _idx = 0; _idx < 20; _idx++) {
-                    let elem = dataArray[_idx];
-                    if(elem.hasOwnProperty('type')) {
-                        if(elem.type === 'video') {
-                            let o = createNewVimObj(_idx, elem);
-                            vimLinks.push(o);
+                try {
+                    let jsonBod = JSON.parse(body);
+                    // GRAB THE 'DATA' ARRAY WHICH CONTAINS ALL THE VIMEO LINKS //
+                    let dataArray = jsonBod.data;
+                    console.log('dataArray:', dataArray); // REMOVE ME //
+                    for(let _idx = 0; _idx < 20; _idx++) {
+                        let elem = dataArray[_idx];
+                        if(elem.hasOwnProperty('type')) {
+                            if(elem.type === 'video') {
+                                let o = createNewVimObj(_idx, elem);
+                                vimLinks.push(o);
+                            }
                         }
                     }
+    console.log(vimLinks);
+                    notifier.emit('scraper_sends_message', {'message': 'data_ready', 'data': vimLinks});
+                    
+                } catch (error) {
+                    console.log(`${myDeviceName}:grabVideoData():silent ERROR:${error}`);
                 }
-
-                notifier.emit('scraper_sends_message', {'message': 'data_ready', 'data': vimLinks});
             }
         }
     );

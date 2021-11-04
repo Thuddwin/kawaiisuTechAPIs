@@ -7,7 +7,6 @@ const https_options = {
     key: fs.readFileSync(`/etc/letsencrypt/live/www.kawaiisutech.com/privkey.pem`),
     cert: fs.readFileSync('/etc/letsencrypt/live/www.kawaiisutech.com/fullchain.pem')
 }
-const scraper = require('./public/js/mediaCenterScraper');
 const myDeviceName = 'kTechServer';
 
 /* API ACCESS */
@@ -41,7 +40,6 @@ const myDeviceName = 'kTechServer';
 /* SOCKET CONNECTIONS */
     io.on('connection', socket => {
         console.log(`${myDeviceName}:io.on:connection: Device connected.`)
-        scraper.grabVideoData(); // Sends notifier event when data is ready. //
         socket.emit('ktech_sends_message', {'message':'connected_to_ktech','data': 'Connected to kTechServer @ http://www.kawaiisutech.com.'});
         
         // INCOMING MESSAGES //
@@ -64,11 +62,7 @@ const myDeviceName = 'kTechServer';
         if(data.message === 'new_schedule') {
             io.emit('ktech_sends_message', {'message':'new_schedule', 'data':data.data});
         }
-    });
-
-    notifier.on('scraper_sends_message', data => {
-        io.emit('ktech_sends_message', {'message': 'new_video_list', 'data': data.data})
-    });
+    })
 /*****************/
 
 async function getScheduleAsync() {
