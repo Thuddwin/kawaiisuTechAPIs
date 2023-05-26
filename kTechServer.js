@@ -1,32 +1,35 @@
-const fa = require('./public/js/fileAccess');
+const fa = require('./public/js/fileAccess'); 
 const fs = require('fs');
 const notifier = require('./public/js/Notifier');
 const express = require('express');
 const app = express();
+const path = require('path');
 const https_options = {
     key: fs.readFileSync(`/etc/letsencrypt/live/www.kawaiisutech.com/privkey.pem`),
     cert: fs.readFileSync('/etc/letsencrypt/live/www.kawaiisutech.com/fullchain.pem')
 }
 const myDeviceName = 'kTechServer';
 
-/* API ACCESS */
-    const https = require('https');
-    let server = https.createServer(https_options, app)
-    server.listen(443);
 /* EXPRESS SETUP - POSSIBLE FUTURE FEATURE */
-    app.use(express.static('public'));
+    // app.use(express.static('public'));
+    app.use(express.static(__dirname + '/public'));
 /* WEB PAGE SETUP */
     app.get('/', (req, res) => {
-            res.status(200).send('Future site of KawaiisuTech.com.');
+            res.status(200).sendFile(path.join(__dirname, 'public/views/home.html'));
     });
 /* API PULL DATA REQUEST (Requires effort from the Client.) */
     app.get('/schedule', (req, res) => {
     // First, read schedule from disk. //
     fa.gs().then((sched) => {
-        console.log(`${myDeviceName}:app.get/schedule:fa.gs():sched pull...`);
-        if(sched) { console.log(`${myDeviceName}: was successful.`); }
-        else { console.log(`${myDeviceName}: failed.`); }
-        res.status(200).send(sched);
+        console.log(`${myDeviceName}:app.get/schedule:fa.gs():sched pull from Client in the wild`);
+        if(sched) { 
+            console.log(`${myDeviceName}: was successful.`);
+            res.status(200).send(sched);
+        }
+        else { 
+            console.log(`${myDeviceName}: failed.`);
+            res.status(500).send(`Attemp to fetch schedule failed.`);
+        }
     });
 });
 /*****************************************************/
@@ -71,3 +74,9 @@ async function getScheduleAsync() {
         return sched;
     });
 }
+
+/* API ACCESS */
+const https = require('https');
+let server = https.createServer(https_options, app)
+server.listen(443);
+console.log(`kTechServer listening on Port 443.`);

@@ -4,6 +4,7 @@
   "description": "REST API server for Kawaiisu Tech projects",
   "main": "index.js",
   "dependencies": {
+    "cec-controller": "^1.4.0",
     "express": "^4.17.1",
     "http": "^0.0.1-security",
     "https": "^1.0.0",

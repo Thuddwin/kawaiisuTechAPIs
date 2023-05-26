@@ -35,16 +35,6 @@ async function getSchedJSON() {
     });
 }
 
-
-async function getGS() {
-    return await gs()
-    .then(data => {
-        console.log(`${myDeviceName}:getGS():data:`);
-        console.dir(data);
-        return data;
-    })
-}
-
 async function gs() {
     return await getScheduleFromFile().then(d => {
         return d;
