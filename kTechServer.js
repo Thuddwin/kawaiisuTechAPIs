@@ -60,10 +60,12 @@ const myDeviceName = 'kTechServer';
 /**********************/
 
 /* NOTIFICATIONS */
-    notifier.on('file_access_sends_message', data => {
+    notifier.on('file_access_sends_message', dataIn => {
         console.log(`${myDeviceName}:notifier.on:file_access_sends_message`);
-        if(data.message === 'new_schedule') {
-            io.emit('ktech_sends_message', {'message':'new_schedule', 'data':data.data});
+        ({message} = dataIn);
+        if(message === 'new_schedule') {
+            ({data} = dataIn);
+            io.emit('ktech_sends_message', {'message':'new_schedule', 'data':data});
         }
     })
 /*****************/
