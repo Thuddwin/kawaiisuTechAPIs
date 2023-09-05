@@ -13,7 +13,8 @@ strictlyLIVE (sL) modules in the wild come here to get Schedule information.  Fo
     * The table shall have fields for: User Name, User Address, date of deployment, mac address, church code (i.e. PDX1, UKR1), (more?)
     * The database shall be accessable locally, for all CRUD activities.  NOTE: I may need to open a path for the Ukranian folks to update their own schedules sInce I probably won't have the timely information needed to stay in sync with their activities.
   * To Schedule Editor (rename this???) add:
-    * A modules list view, module records list view
+    * A Modules List view,
+    * A Module Records list view
 
 ## Prayer Request Services (PRS) API
 This API services the Twilio phone-in line. Database used. 
