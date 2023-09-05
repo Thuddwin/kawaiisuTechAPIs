@@ -6,7 +6,7 @@ strictlyLIVE (sL) modules in the wild come here to get Schedule information.  Fo
 <br>2023.09.04 (WIP) - Today a User said that the owner of her mother's care facility saw a need for <b>strictlyLIVE</b> to be deployed into the local Ukranian community - they also have elderly folks that would love to hear the Word of God via their own churches! :)
 <br>To provide the same 'auto-schedule-updates' for the Ukranian (and other) Users, paths to different church-event schedules is required.
 <br>Additionally, a Godly person from the Ukranian (or other) community MAY be required to keep the schedule updated for their events.
-<br>For now, the plan is to enhance the kTechServer's aptitude by integrating a lookup table that it can refer to when pushing the schedule to <b>strictlyLIVE</b> modules in the wild. A bit like an on-the-fly seperator that can distribute events to a module based on its Church Code.
+<br>For now, the plan is to enhance the kTechServer's aptitude by integrating a lookup table that it can refer to when pushing the schedule to <b>strictlyLIVE</b> modules in the wild. A bit like an on-the-fly seperator that can distribute events to a module based on its Church Code that will be found in the kTechServer's database. How to tie database to module is being worked out.
 #### TODO (WIP) ####
   * <b>NO CHANGES TO THE strictlyLIVE module should be needed. This implementation should be all on the kTechServer.</b>
   * Add a table to the database that holds records of each deployed strictlyLIVE module:
