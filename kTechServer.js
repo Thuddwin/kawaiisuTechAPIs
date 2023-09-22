@@ -19,18 +19,19 @@ const myDeviceName = 'kTechServer';
     });
 /* API PULL DATA REQUEST (Requires effort from the Client.) */
     app.get('/schedule', (req, res) => {
-    // First, read schedule from disk. //
-    fa.gs().then((sched) => {
-        console.log(`${myDeviceName}:app.get/schedule:fa.gs():sched pull from Client in the wild`);
-        if(sched) { 
-            console.log(`${myDeviceName}: was successful.`);
-            res.status(200).send(sched);
+        // First, read schedule from disk. TODO:9.15.23:Get from database based on 'church code'.
+        fa.gs().then((sched) => {
+            console.log(`${myDeviceName}:app.get/schedule:fa.gs():sched pull from Client in the wild`);
+            if(sched) {
+                console.log(`${myDeviceName}: was successful.`);
+                res.status(200).send(sched);
+            }
+            else {
+                console.log(`${myDeviceName}: failed.`);
+                res.status(500).send(`Attemp to fetch schedule failed.`);
+            }
         }
-        else { 
-            console.log(`${myDeviceName}: failed.`);
-            res.status(500).send(`Attemp to fetch schedule failed.`);
-        }
-    });
+    );
 });
 /*****************************************************/
 
