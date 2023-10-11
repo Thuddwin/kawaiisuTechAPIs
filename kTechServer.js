@@ -53,10 +53,20 @@ const myDeviceName = 'kTechServer';
                 getScheduleAsync();
             } else if (message === 'my_id') {
                 let {id} = data;
-                console.log(`${myDeviceName}:Client ID: ${id}.`);
+                const timeObj = new Date().toLocaleString('en-US', {hour12: false});
+                console.log(`\n${myDeviceName}:CONNECTED:`);
+                socket.clientInfo = {'username': id, 'connectTime': timeObj};
+                console.dir(socket.clientInfo);
                 getScheduleAsync();
             }
         });
+
+        socket.on('disconnect', (data) => {
+            console.log(`\n${myDeviceName}:DISCONNECTED:`);
+            const timeObj = new Date().toLocaleString('en-US', {hour12: false});
+            socket.clientInfo.DconnectTime = timeObj;
+            console.dir(socket.clientInfo);
+        })
     });
 /**********************/
 
