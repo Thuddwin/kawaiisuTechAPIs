@@ -47,10 +47,10 @@ const myDeviceName = 'kTechServer';
         socket.emit('ktech_sends_message', {'message':'connected_to_ktech','data': 'Connected to kTechServer @ http://www.kawaiisutech.com.'});
         
         // INCOMING MESSAGES //
-        socket.on('client_sends_message_to_ktech', data => {
+        socket.on('client_sends_message_to_ktech', async(data) => {
             let {message} = data;
             if(message === 'request_api_schedule') {
-                getScheduleAsync();
+                await getScheduleAsync();
             } else if (message === 'my_id') {
                 let {id} = data;
                 const timeObj = new Date().toLocaleString('en-US', {hour12: false});
@@ -58,14 +58,32 @@ const myDeviceName = 'kTechServer';
                 socket.clientInfo = {'username': id, 'connectTime': timeObj};
                 console.dir(socket.clientInfo);
                 getScheduleAsync();
+                const allClients = await getClientsList();
+                io.emit('ktech_sends_message', {'message': 'requested_client_list', 'data': allClients});
             }
         });
 
-        socket.on('disconnect', (data) => {
+        socket.on('disconnect', async() => {
             console.log(`\n${myDeviceName}:DISCONNECTED:`);
+            const allClients = await getClientsList();
             const timeObj = new Date().toLocaleString('en-US', {hour12: false});
-            socket.clientInfo.DconnectTime = timeObj;
-            console.dir(socket.clientInfo);
+            if(socket.hasOwnProperty('clientInfo')) {
+                socket.clientInfo.DconnectTime = timeObj;
+                const dConnClient = buildClient(socket.clientInfo);
+                console.log('DCONN OBJ:');
+                console.dir(dConnClient);
+                allClients.push(dConnClient.client);
+                console.dir(allClients);
+            }
+            io.emit('ktech_sends_message', {'message': 'requested_client_list', 'data': allClients});
+        });
+
+        socket.on('webModAPIService_sends_message', async(dataIn) => {
+            ({message, data} = dataIn);
+            if(message == 'request_client_list') {
+                const clientList = await getClientsList();
+                socket.emit('ktech_sends_message', {'message': 'requested_client_list', 'data': clientList});
+            }
         })
     });
 /**********************/
@@ -80,13 +98,58 @@ const myDeviceName = 'kTechServer';
         }
     })
 /*****************/
-
+/* METHODS */
 async function getScheduleAsync() {
     return await fa.getSchedJSON().then((sched) => {
         io.emit('ktech_sends_message', {'message':'new_schedule', 'data': sched});
         return sched;
     });
 }
+
+const getClientsList = async() => {
+    const sockClients = await io.fetchSockets();
+    let allClients = [];
+    
+    sockClients.forEach(element => {
+        if(element.hasOwnProperty('clientInfo')) {
+            newClientVals = buildClient(element.clientInfo);
+            if(newClientVals.nameLen > 1 ) {
+                allClients.push(newClientVals.client);
+            }
+        }
+    });
+    console.log(`${myDeviceName}:getClientsList(): allClients:`);
+    console.dir(allClients);
+    return allClients;
+}
+
+// Build both newly connected and disconnected clients //
+// Incoming object keys: username, connectTime, DconnectTime //
+const buildClient = (sockClientIn) => {
+    let clientItem = new Object();
+    console.log('buildClient sockClientIn:');
+    console.dir(sockClientIn);
+    const usernameParts = sockClientIn.username.split(':');
+    if(usernameParts.length > 1) {
+        console.log(`speaker: ${usernameParts[0]}`);
+        clientItem.speaker = usernameParts[0];
+    }
+    console.log(`title: ${usernameParts[1]}`);
+    clientItem.title = usernameParts[1];
+
+    clientItem.state = 'ON';
+
+    clientItem.onTime = sockClientIn.connectTime;
+    if(sockClientIn.hasOwnProperty('DconnectTime')) {
+        clientItem.offTime = sockClientIn.DconnectTime;
+        clientItem.state = 'OFF';
+    }
+
+    console.log(`state: ${clientItem.state}`);
+
+    return {'nameLen':usernameParts.length, 'client': clientItem};
+}
+/*****************/
 
 /* API ACCESS */
 const https = require('https');
