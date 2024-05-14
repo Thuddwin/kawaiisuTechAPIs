@@ -18,3 +18,25 @@ strictlyLIVE (sL) modules in the wild come here to get Schedule information.  Fo
 
 ## Prayer Request Services (PRS) API
 This API services the Twilio phone-in line. Database used. 
+
+## slServer
+This app receives connections to strictlyLIVE clients in the wild.  Each client's connects/disconnects, and schedule pushes go through this app.<br>
+It also serves up a very basic, text only web page, and will display a dump of the currect schedule.<br>
+It requires an SSL certificate which is provided by and automatically renewed via certbot.<br>
+
+The platform used for this project is a Le Potato (arm64) running the Buster distro (2022-09-22-raspbian-bullseye-arm64+aml-s905x-cc.img from the Le Potato web site).
+### To build:
+```
+Flash a GOOD quality microSD with 2022-09-22-raspbian-bullseye-arm64+aml-s905x-cc.img,
+Follow the setup that auto-launches at first boot, (requires a USB Mouse/Keyboard),
+Install certbot via snapd as per instructions here: https://certbot.eff.org/instructions?ws=other&os=debianbuster (When the time comes, Choose Yes, okay to stop server...)
+Install Node.js: 
+  Download from https://nodejs.org/en/download/prebuilt-binaries THEN SELECT "I want the _v20.13.1 (LTS)_ version of Node.js for _Linux_ running _ARM64_,
+  Install Node per Instructables: https://www.instructables.com/Install-Nodejs-and-Npm-on-Raspberry-Pi/,
+From pi home directory: git clone kawaiisuTechAPIs project,
+From pi home directory: git clone kawaiisuSlSchedEd project,
+In each of the projects run: npm install,
+In /home/pi/kawaiisuTechAPIs: sudo node kTechServer.js
+In /home/pi/kawaiisuSlSchedEd: node schedEd.js
+OPTIONAL: From kawaiisuSlSchedEd, copy .bash_aliases to /home/pi then: source .bash_aliases.  Type: alias to see shortcuts.
+```
